@@ -1,10 +1,12 @@
 name: Generate Video with VEO3
 
 on:
-  workflow_dispatch:   # Manual trigger
-  push:
-    branches:
-      - main           # Or your preferred branch
+  workflow_dispatch:
+    inputs:
+      prompt:
+        description: "Enter the video prompt (cinematic, safe, romantic, etc.)"
+        required: true
+        default: "A cinematic romantic scene with a couple in their 30s, emotional and intimate but safe"
 
 jobs:
   generate-video:
@@ -27,6 +29,7 @@ jobs:
       - name: Run video generation script
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          VIDEO_PROMPT: ${{ github.event.inputs.prompt }}
         run: |
           python video_gen.py
 
